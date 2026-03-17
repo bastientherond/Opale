@@ -1,1 +1,54 @@
+# Changelog
 
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [Unreleased]
+
+---
+
+## [0.2.0] - 2026-03-17
+
+### Added
+
+- `Opale.Tests` — unit test project (xUnit + FluentAssertions) with 131 tests covering 100% of the public API (sync and async)
+- `Opale.Samples` — console application with four real-world usage examples:
+  - User registration with multi-step validation pipeline
+  - CSV file parsing with per-line error collection
+  - Async HTTP service calls with `MapError` and parallel fetch
+  - Order processing pipeline with payment, `Recover`, and `MapError` to HTTP status codes
+- NuGet package metadata in `Opale.csproj` (`PackageId`, `Version`, `Authors`, `Description`, `PackageTags`, `PackageLicenseExpression`)
+- `GenerateDocumentationFile` enabled — XML docs are now exported with the assembly
+- Professional `README.md` with full API reference, usage examples, and async section
+
+### Fixed
+
+- `Result<T, TError>.Value` and `.Error` properties were returning `default` instead of the actual stored value. Properties used the C# 13 `field` keyword (auto-generated backing field) while constructors assigned `_value`/`_error` (explicitly declared fields). Fixed by aligning the property getters to use `_value!` and `_error!`
+
+### Improved
+
+- XML doc comment on `Result<T, TError>` class updated with accurate summary, `<typeparam>` descriptions, and `<exception>` tags on `Value` and `Error`
+
+---
+
+## [0.1.0] - 2026-03-17
+
+### Added
+
+- Core `Result<T, TError>` type with `Ok` and `Fail` factory methods
+- Implicit conversion from `T` to `Result<T, TError>.Ok(value)`
+- `IsSuccess` and `IsFailure` properties
+- `Value` and `Error` accessors with guarded access (throw `InvalidOperationException` on misuse)
+- **Pattern Matching** — `Match<TResult>` and void `Match`
+- **Transformations** — `Map`, `Bind`, `MapError`, `ToException`
+- **Recovery** — `Recover`, `RecoverWith`, `GetValueOrDefault`
+- **Side Effects** — `OnSuccess`, `OnFailure`, `Tap`
+- **Inspection** — `IsSuccessAnd`, `IsFailureAnd`, `IsContains`
+- **Conversion** — `ToOption` (returns `T?`)
+- **Exception interop** — `Result.Try(Func<T>)` wraps exceptions as `Result<T, Exception>`
+- Full async counterparts for all operations (`*Async` suffix), supporting both sync and async delegates
+- MIT License

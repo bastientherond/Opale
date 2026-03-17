@@ -1,3 +1,5 @@
 <Solution>
   <Project Path="Opale/Opale.csproj" />
+  <Project Path="Opale.Tests/Opale.Tests.csproj" />
+  <Project Path="Opale.Samples/Opale.Samples.csproj" />
 </Solution>
