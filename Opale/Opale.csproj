@@ -10,13 +10,15 @@
 
     <PropertyGroup>
         <PackageId>Opale</PackageId>
-        <Version>0.1.0</Version>
+        <!-- Version is overridden at pack time by the CI pipeline via -p:Version=x.y.z -->
+        <Version>1.0.0-alpha.1</Version>
         <Authors>bastientherond</Authors>
         <Description>A lightweight Result type for functional error handling in C#. Provides a type-safe alternative to exceptions with full sync and async support.</Description>
         <PackageTags>result;functional;error-handling;monad;railway;option</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/bastientherond/Opale</RepositoryUrl>
         <Deterministic>true</Deterministic>
     </PropertyGroup>
 

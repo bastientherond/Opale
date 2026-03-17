@@ -11,7 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [0.2.0] - 2026-03-17
+## [1.0.0-alpha.1] - 2026-03-17
+
+First public pre-release. All core features are implemented and tested. This alpha is intended for early adopters and feedback before the stable 1.0.0 release.
 
 ### Added
 
@@ -21,8 +23,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - CSV file parsing with per-line error collection
   - Async HTTP service calls with `MapError` and parallel fetch
   - Order processing pipeline with payment, `Recover`, and `MapError` to HTTP status codes
-- NuGet package metadata in `Opale.csproj` (`PackageId`, `Version`, `Authors`, `Description`, `PackageTags`, `PackageLicenseExpression`)
-- `GenerateDocumentationFile` enabled — XML docs are now exported with the assembly
+- NuGet package metadata (`PackageId`, `Version`, `Authors`, `Description`, `PackageTags`, `PackageLicenseExpression`, `RepositoryUrl`)
+- `GenerateDocumentationFile` — XML docs exported with the assembly
+- GitHub Actions publish pipeline (`.github/workflows/publish.yml`):
+  - Triggered on `v*` tag push
+  - Runs full test suite before publishing
+  - Builds with the version extracted from the git tag
+  - Packs and pushes to NuGet.org
+  - Creates a GitHub Release with the `.nupkg` attached and release notes extracted from this file
 - Professional `README.md` with full API reference, usage examples, and async section
 
 ### Fixed
@@ -31,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improved
 
-- XML doc comment on `Result<T, TError>` class updated with accurate summary, `<typeparam>` descriptions, and `<exception>` tags on `Value` and `Error`
+- XML doc comments on `Result<T, TError>` updated with accurate `<summary>`, `<typeparam>`, and `<exception>` tags
 
 ---
 

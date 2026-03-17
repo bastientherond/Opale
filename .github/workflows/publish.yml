@@ -1,0 +1,110 @@
+name: Publish
+
+# Triggered when a version tag is pushed: v1.0.0, v1.0.0-alpha.1, etc.
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  # ── Job 1: Run the full test suite ────────────────────────────────────────
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Test
+        run: >
+          dotnet test
+          --no-build
+          --configuration Release
+          --logger "console;verbosity=normal"
+
+  # ── Job 2: Pack and publish (only if tests pass) ──────────────────────────
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    needs: test
+
+    permissions:
+      contents: write   # required to create GitHub releases
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      # Strip the leading 'v' from the tag (e.g. v1.0.0-alpha.1 → 1.0.0-alpha.1)
+      - name: Extract version
+        id: version
+        run: echo "VALUE=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      # Extract the release notes for this version from CHANGELOG
+      - name: Extract release notes
+        id: notes
+        run: |
+          VERSION="${{ steps.version.outputs.VALUE }}"
+          NOTES=$(awk "/^## \[$VERSION\]/{found=1; next} found && /^## \[/{exit} found{print}" CHANGELOG)
+          # Store multiline output safely
+          {
+            echo "BODY<<EOF"
+            echo "$NOTES"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Restore
+        run: dotnet restore
+
+      # Build with the version from the tag so it is embedded in the assembly
+      - name: Build
+        run: >
+          dotnet build
+          --no-restore
+          --configuration Release
+          -p:Version=${{ steps.version.outputs.VALUE }}
+
+      # Pack only the library — tests and samples are not packaged
+      - name: Pack
+        run: >
+          dotnet pack Opale/Opale.csproj
+          --no-build
+          --configuration Release
+          -p:Version=${{ steps.version.outputs.VALUE }}
+          --output ./artifacts
+
+      # Push to NuGet.org — requires a NUGET_API_KEY repository secret
+      - name: Push to NuGet
+        run: >
+          dotnet nuget push ./artifacts/*.nupkg
+          --api-key ${{ secrets.NUGET_API_KEY }}
+          --source https://api.nuget.org/v3/index.json
+          --skip-duplicate
+
+      # Create the GitHub release and attach the .nupkg as a downloadable asset
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: v${{ steps.version.outputs.VALUE }}
+          body: ${{ steps.notes.outputs.BODY }}
+          prerelease: ${{ contains(steps.version.outputs.VALUE, '-') }}
+          files: |
+            ./artifacts/*.nupkg
+            ./artifacts/*.snupkg
