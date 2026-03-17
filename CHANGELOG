@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.0-alpha.2] - 2026-03-17
+
+### Fixed
+
+- CI publish pipeline corrected to use GitHub Packages (`https://nuget.pkg.github.com`) with the automatic `GITHUB_TOKEN` instead of NuGet.org, removing the need for a manual `NUGET_API_KEY` secret
+
+---
+
 ## [1.0.0-alpha.1] - 2026-03-17
 
 First public pre-release. All core features are implemented and tested. This alpha is intended for early adopters and feedback before the stable 1.0.0 release.
