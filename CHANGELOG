@@ -11,6 +11,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.0-alpha.3] - 2026-03-17
+
+### Added
+
+- `Result.TryAsync<T>(Func<Task<T>>)` — async counterpart to `Result.Try`, catches exceptions from async delegates
+- `IEquatable<Result<T,TError>>` implementation with `Equals`, `GetHashCode`, `==`, `!=`, and `ToString` (`Ok(…)` / `Fail(…)`) in new `Extensions/Result.Equality.cs`
+- `.github/workflows/ci.yml` — CI pipeline that runs on every push and pull request to `main` (build + test)
+- XML doc comments on all extension files (`Transform`, `Match`, `Recovery`, `SideEffects`, `Inspection`, `Conversion`, `Operators`) and `Static/Result.Try`
+
+### Fixed
+
+- `Match(Action<T>, Action)` void overload: `onFailure` parameter type corrected from `Action` to `Action<TError>` so the error value is always passed to the failure branch
+
+### Improved
+
+- Package now multi-targets `net8.0`, `net9.0`, and `net10.0`
+- NuGet package now ships a symbols package (`.snupkg`) for source-stepping in debuggers
+- Added `PackageProjectUrl` and `Copyright` metadata to the NuGet package
+- Test suite expanded to 150 tests (added `ResultEqualityTests` and `ResultTryAsyncTests`)
+
+---
+
 ## [1.0.0-alpha.2] - 2026-03-17
 
 ### Fixed

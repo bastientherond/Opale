@@ -57,7 +57,7 @@ public class ResultMatchTests
         var seen = 0;
         result.Match(
             onSuccess: v => seen = v,
-            onFailure: () => seen = -1);
+            onFailure: _ => seen = -1);
         seen.Should().Be(5);
     }
 
@@ -65,11 +65,11 @@ public class ResultMatchTests
     public void MatchVoid_OnFail_InvokesOnFailure()
     {
         var result = Result<int, string>.Fail("x");
-        var seen = 0;
+        var seen = string.Empty;
         result.Match(
-            onSuccess: _ => seen = 1,
-            onFailure: () => seen = -1);
-        seen.Should().Be(-1);
+            onSuccess: _ => seen = "success",
+            onFailure: e => seen = e);
+        seen.Should().Be("x");
     }
 
     // ── MatchAsync — all overloads ─────────────────────────────────────────

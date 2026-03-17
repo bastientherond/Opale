@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net10.0</TargetFramework>
+        <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
@@ -11,15 +11,19 @@
     <PropertyGroup>
         <PackageId>Opale</PackageId>
         <!-- Version is overridden at pack time by the CI pipeline via -p:Version=x.y.z -->
-        <Version>1.0.0-alpha.2</Version>
+        <Version>1.0.0-alpha.3</Version>
         <Authors>bastientherond</Authors>
+        <Copyright>Copyright © 2026 bastientherond</Copyright>
         <Description>A lightweight Result type for functional error handling in C#. Provides a type-safe alternative to exceptions with full sync and async support.</Description>
         <PackageTags>result;functional;error-handling;monad;railway;option</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageProjectUrl>https://github.com/bastientherond/Opale</PackageProjectUrl>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/bastientherond/Opale</RepositoryUrl>
         <Deterministic>true</Deterministic>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
 
     <ItemGroup>
