@@ -1,5 +1,4 @@
 using Opale;
-using Opale.Static;
 
 namespace Opale.Samples.Examples;
 

@@ -7,10 +7,10 @@ namespace Opale;
 /// </summary>
 /// <typeparam name="T">The type of the success value.</typeparam>
 /// <typeparam name="TError">The type of the error.</typeparam>
-public partial class Result<T, TError>
+public sealed partial class Result<T, TError>
 {
-    private readonly T _value;
-    private readonly TError  _error;
+    private readonly T? _value;
+    private readonly TError? _error;
 
     private Result(T value)
     {

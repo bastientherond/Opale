@@ -43,7 +43,7 @@ file class WeatherService(HttpClient http)
         // Here we simulate responses to keep the sample self-contained.
         await Task.Delay(10); // simulate latency
 
-        return city.ToLower() switch
+        return city.ToLowerInvariant() switch
         {
             "paris"  => Result<WeatherForecast, WeatherError>.Ok(
                             new WeatherForecast("Paris",

@@ -1,5 +1,4 @@
 using Opale;
-using Opale.Static;
 
 namespace Opale.Samples.Examples;
 
@@ -44,7 +43,7 @@ file static class UserRepository
     private static readonly HashSet<string> _takenUsernames = ["alice", "bob"];
 
     public static Result<string, RegistrationError> EnsureUsernameAvailable(string username) =>
-        _takenUsernames.Contains(username.ToLower())
+        _takenUsernames.Contains(username.ToLowerInvariant())
             ? Result<string, RegistrationError>.Fail(RegistrationError.UsernameAlreadyTaken)
             : Result<string, RegistrationError>.Ok(username);
 

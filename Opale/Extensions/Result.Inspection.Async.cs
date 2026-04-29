@@ -7,8 +7,8 @@ public partial class Result<T, TError>
     /// success value satisfies the synchronous <paramref name="predicate"/>.
     /// </summary>
     /// <param name="predicate">Synchronous condition tested against the success value.</param>
-    public async Task<bool> IsSuccessAndAsync(Func<T, bool> predicate)
-        => IsSuccess && await Task.FromResult(predicate(Value));
+    public Task<bool> IsSuccessAndAsync(Func<T, bool> predicate)
+        => Task.FromResult(IsSuccess && predicate(Value));
 
     /// <summary>
     /// Asynchronously returns <see langword="true"/> when the result is successful and the
@@ -23,8 +23,8 @@ public partial class Result<T, TError>
     /// error value satisfies the synchronous <paramref name="predicate"/>.
     /// </summary>
     /// <param name="predicate">Synchronous condition tested against the error value.</param>
-    public async Task<bool> IsFailureAndAsync(Func<TError, bool> predicate)
-        => IsFailure && await Task.FromResult(predicate(Error));
+    public Task<bool> IsFailureAndAsync(Func<TError, bool> predicate)
+        => Task.FromResult(IsFailure && predicate(Error));
 
     /// <summary>
     /// Asynchronously returns <see langword="true"/> when the result is a failure and the
@@ -39,11 +39,8 @@ public partial class Result<T, TError>
     /// value equals <paramref name="value"/> using the default equality comparer.
     /// </summary>
     /// <param name="value">The value to compare against the success value.</param>
-    public async Task<bool> IsContainsAsync(T value)
-        => IsSuccess
-           && Value is not null
-           && value is not null
-           && await Task.FromResult(EqualityComparer<T>.Default.Equals(value, Value));
+    public Task<bool> IsContainsAsync(T value)
+        => Task.FromResult(IsSuccess && EqualityComparer<T>.Default.Equals(value, Value));
 
     /// <summary>
     /// Asynchronously returns <see langword="true"/> when the result is successful and its
@@ -51,8 +48,5 @@ public partial class Result<T, TError>
     /// </summary>
     /// <param name="value">Task that resolves to the value to compare against.</param>
     public async Task<bool> IsContainsAsync(Task<T> value)
-        => IsSuccess
-           && Value is not null
-           && await value is not null
-           && EqualityComparer<T>.Default.Equals(await value, Value);
+        => IsSuccess && EqualityComparer<T>.Default.Equals(await value, Value);
 }

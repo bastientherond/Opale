@@ -10,8 +10,6 @@ public partial class Result<T, TError>
     /// A task resolving to the success value, or <see langword="default"/> for
     /// <typeparamref name="T"/>.
     /// </returns>
-    public async Task<T?> ToOptionAsync()
-        => IsSuccess
-            ? await Task.FromResult(Value)
-            : default;
+    public Task<T?> ToOptionAsync()
+        => Task.FromResult(IsSuccess ? Value : default);
 }

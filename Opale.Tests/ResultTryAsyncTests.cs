@@ -1,4 +1,4 @@
-using Opale.Static;
+using Opale;
 
 namespace Opale.Tests;
 

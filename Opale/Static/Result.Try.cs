@@ -1,4 +1,4 @@
-namespace Opale.Static;
+namespace Opale;
 
 /// <summary>
 /// Static factory helpers for creating <see cref="Result{T, TError}"/> instances

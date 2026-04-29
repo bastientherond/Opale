@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `Task<Result<T,TError>>` pipeline extensions for `MapAsync`, `BindAsync`, `MapErrorAsync`, `OnSuccessAsync`, `OnFailureAsync`, `TapAsync`, and `MatchAsync`
+
+### Changed
+
+- `Result.Try` and `Result.TryAsync` now live directly under the `Opale` namespace instead of `Opale.Static`
+- CI now builds all targeted SDKs (`net8.0`, `net9.0`, `net10.0`) with warnings treated as errors and validates package creation
+
+### Fixed
+
+- `Result<T,TError>` internal nullability no longer produces constructor warnings
+- `IsContains` and `IsContainsAsync` now use the default equality comparer directly, including `Ok(null)` comparisons
+- README now documents the supported target frameworks and async pipeline behavior accurately
+
 ---
 
 ## [1.0.0-alpha.3] - 2026-03-17

@@ -87,6 +87,12 @@ public class ResultInspectionTests
         Result<string, int>.Ok("hello").IsContains("world").Should().BeFalse();
     }
 
+    [Fact]
+    public void IsContains_OnOk_WithNullValue_ReturnsTrue()
+    {
+        Result<string?, int>.Ok(null).IsContains(null).Should().BeTrue();
+    }
+
     // ── IsSuccessAndAsync (sync predicate) ─────────────────────────────────
 
     [Fact]
@@ -183,6 +189,13 @@ public class ResultInspectionTests
     {
         var result = await Result<int, string>.Fail("e").IsContainsAsync(5);
         result.Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task IsContainsAsync_OnOk_WithNullValue_ReturnsTrue()
+    {
+        var result = await Result<string?, int>.Ok(null).IsContainsAsync((string?)null);
+        result.Should().BeTrue();
     }
 
     // ── IsContainsAsync (async value) ──────────────────────────────────────

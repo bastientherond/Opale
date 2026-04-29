@@ -25,7 +25,5 @@ public partial class Result<T, TError>
     /// <param name="value">The value to compare against the success value.</param>
     public bool IsContains(T value)
         => IsSuccess
-           && Value is not null
-           && value is not null
            && EqualityComparer<T>.Default.Equals(value, Value);
 }

@@ -35,7 +35,7 @@ result.Match(
 
 ## Installation
 
-> Requires **.NET 10.0** or later.
+> Supports **.NET 8.0**, **.NET 9.0**, and **.NET 10.0**.
 
 ```bash
 dotnet add package Opale
@@ -70,8 +70,6 @@ if (result.IsFailure)
 Use `Result.Try` to capture exceptions as typed failures:
 
 ```csharp
-using Opale.Static;
-
 Result<int, Exception> result = Result.Try(() => int.Parse(userInput));
 ```
 
@@ -228,7 +226,7 @@ Result<Data, Exception> safe = Result.Try(() => JsonSerializer.Deserialize<Data>
 
 ## Async Support
 
-Every operation has a full async counterpart accepting and returning `Task<Result<T, TError>>`. This enables seamless railway-oriented pipelines in async code.
+Every operation has a full async counterpart. Async pipelines can start from either `Result<T, TError>` or `Task<Result<T, TError>>`, which keeps railway-oriented code fluent without manually awaiting each step.
 
 ```csharp
 Result<UserDto, string> result = await GetUserAsync(id)           // Task<Result<User, string>>
@@ -241,7 +239,7 @@ Result<UserDto, string> result = await GetUserAsync(id)           // Task<Result
     );
 ```
 
-All sync methods have an `*Async` variant. Overloads accept both `Func<T, Task<TResult>>` and `Func<T, TResult>` so you can mix sync and async delegates freely.
+Most async variants accept both `Func<T, Task<TResult>>` and `Func<T, TResult>` so you can mix sync and async delegates freely.
 
 ---
 
