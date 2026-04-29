@@ -45,7 +45,6 @@ jobs:
 
     permissions:
       contents: write   # required to create GitHub releases
-      packages: write   # required to push to GitHub Packages
 
     steps:
       - name: Checkout
@@ -97,22 +96,12 @@ jobs:
             -p:Version=${{ steps.version.outputs.VALUE }} \
             --output ./artifacts
 
-      # Register GitHub Packages as a NuGet source.
-      # GITHUB_TOKEN is provided automatically — no secret to configure.
-      - name: Add GitHub Packages source
-        run: |
-          dotnet nuget add source \
-            --username ${{ github.actor }} \
-            --password ${{ secrets.GITHUB_TOKEN }} \
-            --store-password-in-clear-text \
-            --name github \
-            "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
-
-      # Push the package to GitHub Packages
-      - name: Push to GitHub Packages
+      # Push the package to NuGet.org. Requires a repository secret named NUGET_API_KEY.
+      - name: Push to NuGet.org
         run: |
           dotnet nuget push ./artifacts/*.nupkg \
-            --source "github" \
+            --source https://api.nuget.org/v3/index.json \
+            --api-key ${{ secrets.NUGET_API_KEY }} \
             --skip-duplicate
 
       # Create the GitHub release and attach the .nupkg as a downloadable asset
